@@ -27,6 +27,7 @@ const register = (
         birthday: birthday,
         nickname: "",
         civilStatus: "",
+        birthPlace: "",
         height: "",
         weight: "",
         motherName: "",
@@ -59,12 +60,44 @@ const login = (username, password) => {
 };
 
 const logout = () => {
+  localStorage.removeItem("user");
   return axios
     .post(API_URL + "logout", {
       headers: { "Content-Type": "application/json" },
     })
     .then((response) => {
-      localStorage.removeItem("user");
+      return response;
+    });
+};
+
+const updateUser = (
+  user_id,
+  nickname,
+  civilStatus,
+  birthPlace,
+  height,
+  weight,
+  fatherName,
+  motherName
+) => {
+  return axios
+    .put(
+      API_URL + "update",
+      {
+        user_id: parseInt(user_id),
+        nickname: nickname,
+        civilStatus: civilStatus,
+        birthPlace: birthPlace,
+        height: height,
+        weight: weight,
+        fatherName: fatherName,
+        motherName: motherName,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    )
+    .then((response) => {
       return response;
     });
 };
@@ -73,6 +106,7 @@ const authServices = {
   register,
   login,
   logout,
+  updateUser,
 };
 
 export default authServices;

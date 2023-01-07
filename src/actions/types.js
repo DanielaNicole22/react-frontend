@@ -6,5 +6,7 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 
 export const LOGOUT = "LOGOUT";
 
+export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { activate } from "../actions/auth";
+import { updateUser } from "../actions/auth";
 import Layout from "./layout/Layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
@@ -22,10 +22,13 @@ const Steps = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [nickname, setNickname] = useState("");
-  const [civilStatus, setCivilStatus] = useState("");
+  const { user } = useSelector((state) => state.auth);
+  const { message } = useSelector((state) => state.message);
 
-  const [placeOfBirth, setPlaceOfBirth] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [civilStatus, setCivilStatus] = useState("single");
+
+  const [birthPlace, setBirthPlace] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
 
@@ -35,7 +38,16 @@ const Steps = (props) => {
   const [isValid, setIsValid] = useState({});
   const [error, setError] = useState({});
 
+  const [successful, setSuccessful] = useState(false);
+  const [counter, setCounter] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+
   const onClickNextBtn = (e) => {
+    handleSubmit1(e);
+  };
+
+  const moveNext = (e) => {
     const current_fs = e.target.parentElement;
     const next_fs = e.target.parentElement.nextElementSibling;
     const nodes = Array.prototype.slice.call(
@@ -50,7 +62,6 @@ const Steps = (props) => {
     next_fs.style.display = "block";
     current_fs.style.display = "none";
   };
-
   const onClickPreviousBtn = (e) => {
     const current_fs = e.target.parentElement;
     const previous_fs = e.target.parentElement.previousElementSibling;
@@ -67,6 +78,75 @@ const Steps = (props) => {
     current_fs.style.display = "none";
   };
 
+  // $(document).ready(function(){
+
+  //   var current_fs, next_fs, previous_fs; //fieldsets
+  //   var opacity;
+
+  //   $(".next").click(function(){
+
+  //       current_fs = $(this).parent();
+  //       next_fs = $(this).parent().next();
+
+  //       //Add Class Active
+  //       $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+  //       //show the next fieldset
+  //       next_fs.show();
+  //       //hide the current fieldset with style
+  //       current_fs.animate({opacity: 0}, {
+  //           step: function(now) {
+  //               // for making fielset appear animation
+  //               opacity = 1 - now;
+
+  //               current_fs.css({
+  //                   'display': 'none',
+  //                   'position': 'relative'
+  //               });
+  //               next_fs.css({'opacity': opacity});
+  //           },
+  //           duration: 600
+  //       });
+  //   });
+
+  //   $(".previous").click(function(){
+
+  //       current_fs = $(this).parent();
+  //       previous_fs = $(this).parent().prev();
+
+  //       //Remove class active
+  //       $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+  //       //show the previous fieldset
+  //       previous_fs.show();
+
+  //       //hide the current fieldset with style
+  //       current_fs.animate({opacity: 0}, {
+  //           step: function(now) {
+  //               // for making fielset appear animation
+  //               opacity = 1 - now;
+
+  //               current_fs.css({
+  //                   'display': 'none',
+  //                   'position': 'relative'
+  //               });
+  //               previous_fs.css({'opacity': opacity});
+  //           },
+  //           duration: 600
+  //       });
+  //   });
+
+  //   $('.radio-group .radio').click(function(){
+  //       $(this).parent().find('.radio').removeClass('selected');
+  //       $(this).addClass('selected');
+  //   });
+
+  //   $(".submit").click(function(){
+  //       return false;
+  //   })
+
+  //   });
+
   const onChangeNickname = (e) => {
     const nickname = e.target.value;
     setNickname(nickname);
@@ -79,10 +159,10 @@ const Steps = (props) => {
     validate("civilStatus", civilStatus);
   };
 
-  const onChangePlaceOfBirth = (e) => {
-    const placeOfBirth = e.target.value;
-    setPlaceOfBirth(placeOfBirth);
-    validate("placeOfBirth", placeOfBirth);
+  const onChangeBirthPlace = (e) => {
+    const birthPlace = e.target.value;
+    setBirthPlace(birthPlace);
+    validate("birthPlace", birthPlace);
   };
 
   const onChangeHeight = (e) => {
@@ -112,6 +192,7 @@ const Steps = (props) => {
   const validate = (name, value) => {
     if (!value) {
       setIsValid(Object.assign(isValid, { [name]: false }));
+      console.log(value)
       setError(Object.assign(error, { [name]: "This field is required!" }));
       return;
     }
@@ -155,6 +236,42 @@ const Steps = (props) => {
     setIsValid(Object.assign(isValid, { [name]: true }));
   };
 
+  const handleSubmit1 = (e) => {
+    setSuccessful(false);
+    validate("nickname", nickname);
+    validate("civilStatus", civilStatus);
+
+    setCounter(counter + 1);
+
+    if (Object.keys(error).length === 0) {
+      console.log(user.data.user_id)
+      setLoading(true);
+      dispatch(
+        updateUser(
+          user.data.user_id,
+          nickname,
+          civilStatus,
+          birthPlace,
+          height,
+          weight,
+          fatherName,
+          motherName
+        )
+      )
+        .then(() => {
+          setSuccessful(true);
+          moveNext(e);
+        })
+        .catch(() => {
+          setSuccessful(false);
+        })
+        .finally(() => {
+          setShow(true);
+          setLoading(false);
+        });
+    }
+  };
+
   const getFormErrorMessage = (name) => {
     return <div className="invalid-feedback">{error[name]}</div>;
   };
@@ -195,7 +312,6 @@ const Steps = (props) => {
                           <h2 className="fs-title">Personal Information</h2>
                           <Row>
                             <FloatingLabel
-                              controlId="floatingInput"
                               label="Nickname"
                               className="mb-3"
                             >
@@ -247,30 +363,28 @@ const Steps = (props) => {
                           <h2 className="fs-title">Personal Information</h2>
                           <Row>
                             <FloatingLabel
-                              controlId="floatingInput"
                               label="Place of Birth"
                               className="mb-3"
                             >
                               <Form.Control
-                                name="placeOfBirth"
-                                value={placeOfBirth}
+                                name="birthPlace"
+                                value={birthPlace}
                                 type="date"
-                                onChange={onChangePlaceOfBirth}
+                                onChange={onChangeBirthPlace}
                                 className={
-                                  isValid?.placeOfBirth
+                                  isValid?.birthPlace
                                     ? "is-valid"
-                                    : isValid.placeOfBirth !== undefined
+                                    : isValid.birthPlace !== undefined
                                     ? "is-invalid"
                                     : ""
                                 }
                               />
-                              {getFormErrorMessage("placeOfBirth")}
+                              {getFormErrorMessage("birthPlace")}
                             </FloatingLabel>
                           </Row>
                           <Row>
                             <Col>
                               <FloatingLabel
-                                controlId="floatingInput"
                                 label="Height (m)"
                                 className="mb-3"
                               >
@@ -291,7 +405,6 @@ const Steps = (props) => {
                             </Col>
                             <Col>
                               <FloatingLabel
-                                controlId="floatingInput"
                                 label="Weight (kg)"
                                 className="mb-3"
                               >
@@ -332,7 +445,6 @@ const Steps = (props) => {
                           <h2 className="fs-title">Family Background</h2>
                           <Row>
                             <FloatingLabel
-                              controlId="floatingInput"
                               label="Father Name"
                               className="mb-3"
                             >
@@ -353,7 +465,6 @@ const Steps = (props) => {
                           </Row>
                           <Row>
                             <FloatingLabel
-                              controlId="floatingInput"
                               label="Mother Name"
                               className="mb-3"
                             >
@@ -411,6 +522,19 @@ const Steps = (props) => {
                         </div>
                       </fieldset>
                     </form>
+                    {message && (
+                      <div className="form-group">
+                        <Alert
+                          className="alert-message"
+                          show={show}
+                          variant={successful ? "success" : "danger"}
+                          onClose={() => setShow(false)}
+                          dismissible
+                        >
+                          <p>{message}</p>
+                        </Alert>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

@@ -280,7 +280,6 @@ const Register = () => {
                             <Row>
                               <Col>
                                 <FloatingLabel
-                                  controlId="floatingInput"
                                   label="First Name"
                                   className="mb-3"
                                 >
@@ -301,7 +300,6 @@ const Register = () => {
                               </Col>
                               <Col>
                                 <FloatingLabel
-                                  controlId="floatingInput"
                                   label="Middle Name"
                                   className="mb-3"
                                 >
@@ -322,7 +320,6 @@ const Register = () => {
                               </Col>
                               <Col>
                                 <FloatingLabel
-                                  controlId="floatingInput"
                                   label="Last Name"
                                   className="mb-3"
                                 >
@@ -345,7 +342,6 @@ const Register = () => {
                             <Row>
                               <Col>
                                 <FloatingLabel
-                                  controlId="floatingInput"
                                   label="Address"
                                   className="mb-3"
                                 >
@@ -366,7 +362,6 @@ const Register = () => {
                               </Col>
                               <Col>
                                 <FloatingLabel
-                                  controlId="floatingInput"
                                   label="Birthday"
                                   className="mb-3"
                                 >
@@ -391,7 +386,6 @@ const Register = () => {
                               <Form.Label>Account</Form.Label>
                               <Col>
                                 <FloatingLabel
-                                  controlId="floatingInput"
                                   label="Official Email Address"
                                   className="mb-3"
                                 >
@@ -412,7 +406,6 @@ const Register = () => {
                               </Col>
                               <Col>
                                 <FloatingLabel
-                                  controlId="floatingInput"
                                   label="Username"
                                   className="mb-3"
                                 >
@@ -435,7 +428,6 @@ const Register = () => {
                             <Row>
                               <Col>
                                 <FloatingLabel
-                                  controlId="floatingInput"
                                   label="Password"
                                   className="mb-3"
                                 >
@@ -457,7 +449,6 @@ const Register = () => {
                               </Col>
                               <Col>
                                 <FloatingLabel
-                                  controlId="floatingInput"
                                   label="Confirm Password"
                                   className="mb-3"
                                 >
@@ -505,7 +496,7 @@ const Register = () => {
                           </form>
                         </>
 
-                        {(message || error["role"]) && (
+                        {message && (
                           <div className="form-group">
                             <Alert
                               className="alert-message"
@@ -514,7 +505,7 @@ const Register = () => {
                               onClose={() => setShow(false)}
                               dismissible
                             >
-                              <p>{message ?? error["role"]}</p>
+                              <p>{message}</p>
                             </Alert>
                           </div>
                         )}

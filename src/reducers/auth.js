@@ -4,6 +4,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  UPDATE_USER_SUCCESS,
 } from "../actions/types";
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -43,6 +44,12 @@ export default function authReducer(state = initialState, action) {
         ...state,
         isLoggedIn: false,
         user: null,
+      };
+    case UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        isLoggedIn: true,
+        user: payload,
       };
     default:
       return state;

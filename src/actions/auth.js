@@ -4,6 +4,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  UPDATE_USER_SUCCESS,
   SET_MESSAGE,
 } from "./types.js";
 
@@ -123,6 +124,72 @@ export const login = (username, password) => (dispatch) => {
     }
   );
 };
+
+export const updateUser =
+  (
+    user_id,
+    nickname,
+    civilStatus,
+    birthPlace,
+    height,
+    weight,
+    motherName,
+    fatherName,
+  ) =>
+  (dispatch) => {
+    return AuthService.updateUser(
+      user_id,
+      nickname,
+      civilStatus,
+      birthPlace,
+      height,
+      weight,
+      motherName,
+      fatherName
+    ).then(
+      (data) => {
+        console.log(data)
+        dispatch({
+          type: UPDATE_USER_SUCCESS,
+          payload: data.data,
+        });
+
+        dispatch({
+          type: SET_MESSAGE,
+          payload: "User updated successfully!",
+        });
+
+        return Promise.resolve();
+      },
+      (error) => {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        const data =
+          (error.response && error.response.data) ||
+          error.data ||
+          error.toString();
+
+        if (data) {
+          dispatch({
+            type: SET_MESSAGE,
+            payload: data.detail,
+          });
+        } else {
+          dispatch({
+            type: SET_MESSAGE,
+            payload: message,
+          });
+        }
+
+        return Promise.reject();
+      }
+    );
+  };
 
 export const logout = () => (dispatch) => {
   AuthService.logout();
