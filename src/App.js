@@ -10,7 +10,6 @@ import "./App.css";
 /**Bootstrap Imports*/
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import "@fortawesome/fontawesome-svg-core/styles.css";
 
 const App = () => {
   return (

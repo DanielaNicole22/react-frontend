@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
@@ -6,13 +6,12 @@ import { useNavigate } from "react-router-dom";
 import Layout from "./layout/Layout";
 import { login } from "../actions/auth";
 
-const Login = (props) => {
+const Login = () => {
   import("../styles/Login.css");
   const navigate = useNavigate();
   const form = useRef();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
 
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -48,7 +47,6 @@ const Login = (props) => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    setLoading(true);
     validate("username", username);
     validate("password", password);
 
@@ -59,7 +57,6 @@ const Login = (props) => {
         })
         .catch(() => {
           setShow(true);
-          setLoading(false);
         });
     }
   };
