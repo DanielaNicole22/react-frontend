@@ -45,9 +45,6 @@ const Login = (props) => {
     setIsValid(Object.assign(isValid, { [name]: true }));
   };
 
-  useEffect(() => {
-  }, []);
-
   const handleLogin = (e) => {
     e.preventDefault();
 
