@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route, Navigate } from "react-router-dom";
+import RequireAuth from "./components/RequireAuth";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Steps from "./components/Steps";
+import PageNotFound from "./components/PageNotFound";
+import "./App.css";
 
-function App() {
+/**Bootstrap Imports*/
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/404" element={<PageNotFound />} />
+        <Route path="*" element={<Navigate to="/404" />} />
 
+        {/* PROTECTED ROUTES */}
+        <Route element={<RequireAuth />}>
+          <Route path="/" element={<Login />} />
+          <Route path="/steps" element={<Steps />} />
+        </Route>
+      </Routes>
+    </>
+  );
+};
 export default App;
