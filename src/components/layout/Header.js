@@ -1,22 +1,13 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { logout } from "actions/auth";
 
 const Header = (props) => {
   import("../../styles/Header.css");
 
-  const { user } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const onClickLogout = () => {
       dispatch(logout());
   };
-
-  useEffect(() => {
-    if (props.isLoggedIn) {
-    }
-  }, [props.isLoggedIn, dispatch]);
 
   return (
     <nav className="navbar navbar-expand-lg bg-light border-bottom">
@@ -25,7 +16,7 @@ const Header = (props) => {
           <img
             src="/images/logo.jpg"
             className="logo"
-            alt="Model Store logo"
+            alt="Logo"
           />
         </a>
         <div className="logout-div">

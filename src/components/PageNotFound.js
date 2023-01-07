@@ -1,9 +1,8 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Layout from "./layout/Layout";
 
 const PageNotFound = () => {
   import("../styles/PageNotFound.css");
-  const params = useParams();
   const navigate = useNavigate();
 
   const onClickHome = () => {

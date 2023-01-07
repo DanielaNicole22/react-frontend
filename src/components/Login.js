@@ -107,6 +107,7 @@ const Login = (props) => {
                         : ""
                     }`}
                     name="username"
+                    id="username"
                     value={username}
                     onChange={onChangeUsername}
                   />
@@ -127,6 +128,7 @@ const Login = (props) => {
                         : ""
                     }`}
                     name="password"
+                    id="password"
                     value={password}
                     onChange={onChangePassword}
                   />
@@ -136,6 +138,7 @@ const Login = (props) => {
                 <div className="text-center text-lg-start mt-4 pt-2">
                   <button
                     type="submit"
+                    id="submit-btn"
                     className="button btn btn-primary btn-lg"
                     style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
                   >
