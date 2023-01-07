@@ -87,7 +87,6 @@ const Login = (props) => {
                 className="img-fluid"
                 alt="Sample image"
               />
-              <a href="https://www.freepik.com/free-vector/secure-login-concept-illustration_11785899.htm#query=login%20illustration&position=5&from_view=keyword">Image by storyset</a> on Freepik
             </div>
             <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
               <form onSubmit={handleLogin} ref={form}>

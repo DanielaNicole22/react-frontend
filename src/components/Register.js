@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register, login } from "../actions/auth";
 import Layout from "./layout/Layout";
@@ -6,15 +6,12 @@ import { Navigate } from "react-router-dom";
 import {
   Spinner,
   Alert,
-  Card,
   Row,
   Col,
   Button,
   FloatingLabel,
   Form,
 } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 
 const Register = () => {
   import("../styles/Register.css");
@@ -99,13 +96,13 @@ const Register = () => {
   const [error, setError] = useState({});
 
   const validate = (name, value) => {
-    if (!value && name != "middlename") {
+    if (!value && name !== "middlename") {
       setIsValid(Object.assign(isValid, { [name]: false }));
       setError(Object.assign(error, { [name]: "This field is required!" }));
       return;
     }
 
-    if (value.toString().trim() == "" && name !== "middlename") {
+    if (value.toString().trim() === "" && name !== "middlename") {
       setIsValid(Object.assign(isValid, { [name]: false }));
       setError(
         Object.assign(error, { [name]: "This field should not be empty" })
@@ -256,9 +253,16 @@ const Register = () => {
     <>
       <Layout hideHeader={false} isLoggedIn={false}>
         <section className="register-section">
-          <div className="container h-100">
+          <div className="h-100">
             <div className="row d-flex justify-content-center align-items-center h-100">
-              <div className="col-lg-12 col-xl-11">
+            <div className="col-lg-6 col-xl-6">
+            <img
+                  src="/images/register.jpg"
+                  className="img-fluid"
+                  alt="Laptop"
+                />
+              </div>
+              <div className="col-lg-6 col-xl-6">
                 <div
                   className="card text-black"
                   style={{ borderRadius: "25px" }}

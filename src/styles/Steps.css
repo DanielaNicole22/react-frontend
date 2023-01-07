@@ -7,12 +7,6 @@ html {
   height: 100%;
 }
 
-/*Background color*/
-#grad1 {
-  background-color: #9C27B0;
-  background-image: linear-gradient(120deg, #FF4081, #81D4FA);
-}
-
 /*form styles*/
 #msform {
   text-align: center;

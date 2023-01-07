@@ -1,50 +1,46 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
 import { updateUser } from "../actions/auth";
+import { useNavigate } from "react-router-dom";
 import Layout from "./layout/Layout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import {
-  Spinner,
-  Alert,
-  Card,
   Row,
   Col,
-  Button,
   FloatingLabel,
   Form,
+  Button
 } from "react-bootstrap";
 
-const Steps = (props) => {
+const Steps = () => {
   import("../styles/Steps.css");
-  const params = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
-  const { message } = useSelector((state) => state.message);
 
-  const [nickname, setNickname] = useState("");
-  const [civilStatus, setCivilStatus] = useState("single");
+  const [nickname, setNickname] = useState(user?.nickname || "");
+  const [civilStatus, setCivilStatus] = useState(user?.civilStatus || "single");
 
-  const [birthPlace, setBirthPlace] = useState("");
-  const [height, setHeight] = useState("");
-  const [weight, setWeight] = useState("");
+  const [birthPlace, setBirthPlace] = useState(user?.birthPlace || "");
+  const [height, setHeight] = useState(user?.height || "");
+  const [weight, setWeight] = useState(user?.weight || "");
 
-  const [fatherName, setFatherName] = useState("");
-  const [motherName, setMotherName] = useState("");
+  const [fatherName, setFatherName] = useState(user?.fatherName || "");
+  const [motherName, setMotherName] = useState(user?.motherName || "");
 
   const [isValid, setIsValid] = useState({});
   const [error, setError] = useState({});
 
-  const [successful, setSuccessful] = useState(false);
   const [counter, setCounter] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [show, setShow] = useState(false);
 
-  const onClickNextBtn = (e) => {
-    handleSubmit1(e);
+  const onClickNextBtn1 = (e) => {
+    validateCategory1(e);
+  };
+  const onClickNextBtn2 = (e) => {
+    validateCategory2(e);
+  };
+  const onClickNextBtn3 = (e) => {
+    validateCategory3(e);
   };
 
   const moveNext = (e) => {
@@ -77,75 +73,6 @@ const Steps = (props) => {
     previous_fs.style.display = "block";
     current_fs.style.display = "none";
   };
-
-  // $(document).ready(function(){
-
-  //   var current_fs, next_fs, previous_fs; //fieldsets
-  //   var opacity;
-
-  //   $(".next").click(function(){
-
-  //       current_fs = $(this).parent();
-  //       next_fs = $(this).parent().next();
-
-  //       //Add Class Active
-  //       $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-
-  //       //show the next fieldset
-  //       next_fs.show();
-  //       //hide the current fieldset with style
-  //       current_fs.animate({opacity: 0}, {
-  //           step: function(now) {
-  //               // for making fielset appear animation
-  //               opacity = 1 - now;
-
-  //               current_fs.css({
-  //                   'display': 'none',
-  //                   'position': 'relative'
-  //               });
-  //               next_fs.css({'opacity': opacity});
-  //           },
-  //           duration: 600
-  //       });
-  //   });
-
-  //   $(".previous").click(function(){
-
-  //       current_fs = $(this).parent();
-  //       previous_fs = $(this).parent().prev();
-
-  //       //Remove class active
-  //       $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-
-  //       //show the previous fieldset
-  //       previous_fs.show();
-
-  //       //hide the current fieldset with style
-  //       current_fs.animate({opacity: 0}, {
-  //           step: function(now) {
-  //               // for making fielset appear animation
-  //               opacity = 1 - now;
-
-  //               current_fs.css({
-  //                   'display': 'none',
-  //                   'position': 'relative'
-  //               });
-  //               previous_fs.css({'opacity': opacity});
-  //           },
-  //           duration: 600
-  //       });
-  //   });
-
-  //   $('.radio-group .radio').click(function(){
-  //       $(this).parent().find('.radio').removeClass('selected');
-  //       $(this).addClass('selected');
-  //   });
-
-  //   $(".submit").click(function(){
-  //       return false;
-  //   })
-
-  //   });
 
   const onChangeNickname = (e) => {
     const nickname = e.target.value;
@@ -192,12 +119,11 @@ const Steps = (props) => {
   const validate = (name, value) => {
     if (!value) {
       setIsValid(Object.assign(isValid, { [name]: false }));
-      console.log(value)
       setError(Object.assign(error, { [name]: "This field is required!" }));
       return;
     }
 
-    if (value.toString().trim() == "") {
+    if (value.toString().trim() === "") {
       setIsValid(Object.assign(isValid, { [name]: false }));
       setError(
         Object.assign(error, { [name]: "This field should not be empty" })
@@ -236,19 +162,32 @@ const Steps = (props) => {
     setIsValid(Object.assign(isValid, { [name]: true }));
   };
 
-  const handleSubmit1 = (e) => {
-    setSuccessful(false);
+  const validateCategory1 = (e) => {
     validate("nickname", nickname);
     validate("civilStatus", civilStatus);
+    handleSubmit(e);
+  };
 
+  const validateCategory2 = (e) => {
+    validate("birthPlace", birthPlace);
+    validate("height", height);
+    validate("weight", weight);
+    handleSubmit(e);
+  };
+
+  const validateCategory3 = (e) => {
+    validate("fatherName", fatherName);
+    validate("motherName", motherName);
+    handleSubmit(e);
+  };
+
+  const handleSubmit = (e) => {
     setCounter(counter + 1);
 
     if (Object.keys(error).length === 0) {
-      console.log(user.data.user_id)
-      setLoading(true);
       dispatch(
         updateUser(
-          user.data.user_id,
+          user.user_id,
           nickname,
           civilStatus,
           birthPlace,
@@ -259,22 +198,43 @@ const Steps = (props) => {
         )
       )
         .then(() => {
-          setSuccessful(true);
           moveNext(e);
         })
-        .catch(() => {
-          setSuccessful(false);
-        })
-        .finally(() => {
-          setShow(true);
-          setLoading(false);
-        });
     }
   };
 
   const getFormErrorMessage = (name) => {
     return <div className="invalid-feedback">{error[name]}</div>;
   };
+
+  useEffect(() => {
+    const nodes = Array.prototype.slice.call(
+      document.getElementsByTagName("fieldset")
+    );
+    let a = 0;
+    if (nickname === "" || civilStatus === "") {
+      a = 0;
+    } else if (birthPlace === "" || height === "" || weight === "") {
+      a = 1;
+    } else if (fatherName === "" || motherName === "") {
+      a = 2;
+    } else {
+      navigate("/viewProfile/");
+    }
+    for (let i = 0; i < 4; i++) {
+      if (i === a) {
+        document
+          .getElementById("progressbar")
+          .children[a].classList.add("active");
+        nodes[a].style.display = "block";
+      } else {
+        document
+          .getElementById("progressbar")
+          .children[i].classList.remove("active");
+        nodes[i].style.display = "none";
+      }
+    }
+  }, []);
 
   return (
     <Layout hideHeader={false} isLoggedIn={false}>
@@ -285,7 +245,7 @@ const Steps = (props) => {
             <div className="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
               <div className="card px-0 pt-4 pb-0 mt-3 mb-3">
                 <h2>
-                  <strong>Sign Up Your User Account</strong>
+                  <strong>Additional Info</strong>
                 </h2>
                 <p>Fill all form field to go to next step</p>
                 <div className="row">
@@ -311,10 +271,7 @@ const Steps = (props) => {
                         <div className="form-card">
                           <h2 className="fs-title">Personal Information</h2>
                           <Row>
-                            <FloatingLabel
-                              label="Nickname"
-                              className="mb-3"
-                            >
+                            <FloatingLabel label="Nickname" className="mb-3">
                               <Form.Control
                                 name="nickname"
                                 value={nickname}
@@ -352,7 +309,7 @@ const Steps = (props) => {
                         </div>
                         <input
                           type="button"
-                          onClick={onClickNextBtn}
+                          onClick={onClickNextBtn1}
                           name="next"
                           className="next action-button"
                           value="Next Step"
@@ -369,7 +326,6 @@ const Steps = (props) => {
                               <Form.Control
                                 name="birthPlace"
                                 value={birthPlace}
-                                type="date"
                                 onChange={onChangeBirthPlace}
                                 className={
                                   isValid?.birthPlace
@@ -435,7 +391,7 @@ const Steps = (props) => {
                         <input
                           type="button"
                           name="next"
-                          onClick={onClickNextBtn}
+                          onClick={onClickNextBtn2}
                           className="next action-button"
                           value="Next Step"
                         />
@@ -444,10 +400,7 @@ const Steps = (props) => {
                         <div className="form-card">
                           <h2 className="fs-title">Family Background</h2>
                           <Row>
-                            <FloatingLabel
-                              label="Father Name"
-                              className="mb-3"
-                            >
+                            <FloatingLabel label="Father Name" className="mb-3">
                               <Form.Control
                                 name="fatherName"
                                 value={fatherName}
@@ -464,10 +417,7 @@ const Steps = (props) => {
                             </FloatingLabel>
                           </Row>
                           <Row>
-                            <FloatingLabel
-                              label="Mother Name"
-                              className="mb-3"
-                            >
+                            <FloatingLabel label="Mother Name" className="mb-3">
                               <Form.Control
                                 name="motherName"
                                 value={motherName}
@@ -493,8 +443,8 @@ const Steps = (props) => {
                         />
                         <input
                           type="button"
-                          name="make_payment"
-                          onClick={onClickNextBtn}
+                          name="next"
+                          onClick={onClickNextBtn3}
                           className="next action-button"
                           value="Confirm"
                         />
@@ -509,6 +459,7 @@ const Steps = (props) => {
                               <img
                                 src="https://img.icons8.com/color/96/000000/ok--v2.png"
                                 className="fit-image"
+                                alt="checkmark"
                               />
                             </div>
                           </div>
@@ -516,25 +467,18 @@ const Steps = (props) => {
                           <br />
                           <div className="row justify-content-center">
                             <div className="col-7 text-center">
-                              <h5>You Have Successfully Signed Up</h5>
+                              <h5>You can now proceed to the next page!</h5>
                             </div>
+                            <Button
+                              type="submit"
+                              className="button btn btn-primary btn-lg"
+                            >
+                              Proceed
+                            </Button>
                           </div>
                         </div>
                       </fieldset>
                     </form>
-                    {message && (
-                      <div className="form-group">
-                        <Alert
-                          className="alert-message"
-                          show={show}
-                          variant={successful ? "success" : "danger"}
-                          onClose={() => setShow(false)}
-                          dismissible
-                        >
-                          <p>{message}</p>
-                        </Alert>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>

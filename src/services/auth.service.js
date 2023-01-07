@@ -38,7 +38,7 @@ const register = (
       }
     )
     .then((response) => {
-      return response;
+      return response.data;
     });
 };
 
@@ -55,7 +55,7 @@ const login = (username, password) => {
       }
     )
     .then((response) => {
-      return response;
+      return response.data;
     });
 };
 
@@ -94,11 +94,13 @@ const updateUser = (
         motherName: motherName,
       },
       {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     )
     .then((response) => {
-      return response;
+      return response.data;
     });
 };
 

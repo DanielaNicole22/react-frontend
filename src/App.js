@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Steps from "./components/Steps";
 import PageNotFound from "./components/PageNotFound";
+import ViewProfile from "components/ViewProfile";
 import "./App.css";
 
 /**Bootstrap Imports*/
@@ -24,6 +25,7 @@ const App = () => {
         <Route element={<RequireAuth />}>
           <Route path="/" element={<Login />} />
           <Route path="/steps" element={<Steps />} />
+          <Route path="/viewProfile" element={<ViewProfile />} />
         </Route>
       </Routes>
     </>

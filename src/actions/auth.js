@@ -54,11 +54,6 @@ export const register =
           error.message ||
           error.toString();
 
-        const data =
-          (error.response && error.response.data) ||
-          error.data ||
-          error.toString();
-
         dispatch({
           type: REGISTER_FAIL,
         });
@@ -134,7 +129,7 @@ export const updateUser =
     height,
     weight,
     motherName,
-    fatherName,
+    fatherName
   ) =>
   (dispatch) => {
     return AuthService.updateUser(
@@ -148,7 +143,9 @@ export const updateUser =
       fatherName
     ).then(
       (data) => {
-        console.log(data)
+        if (data) {
+          localStorage.setItem("user", JSON.stringify(data.data));
+        }
         dispatch({
           type: UPDATE_USER_SUCCESS,
           payload: data.data,
@@ -156,7 +153,7 @@ export const updateUser =
 
         dispatch({
           type: SET_MESSAGE,
-          payload: "User updated successfully!",
+          payload: data.message,
         });
 
         return Promise.resolve();
