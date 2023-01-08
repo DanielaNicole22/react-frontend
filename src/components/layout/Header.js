@@ -1,6 +1,9 @@
 import { useDispatch } from "react-redux";
 import { logout } from "actions/auth";
 
+/**
+ * Header elements displaying the logo and the logout button
+ */
 const Header = (props) => {
   import("../../styles/Header.css");
 

@@ -6,34 +6,55 @@ import { useNavigate } from "react-router-dom";
 import Layout from "./layout/Layout";
 import { login } from "../actions/auth";
 
+/**
+ * Login Component
+ */
 const Login = () => {
   import("../styles/Login.css");
-  const navigate = useNavigate();
   const form = useRef();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  /**
+   * --------------------
+   * * Component state
+   *  -------------------
+   */
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
+  const [isValid, setIsValid] = useState({});
+  const [error, setError] = useState({});
 
+  /**
+   * -------------------
+   * * Redux store state
+   * -------------------
+   */
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { message } = useSelector((state) => state.message);
 
-  const dispatch = useDispatch();
-
+  /**
+   * Gets value of the username input field
+   */
   const onChangeUsername = (e) => {
     const username = e.target.value;
     setUsername(username);
     validate("username", username);
   };
 
+  /**
+   * Gets value of the password input field
+   */
   const onChangePassword = (e) => {
     const password = e.target.value;
     setPassword(password);
     validate("password", password);
   };
 
-  const [isValid, setIsValid] = useState({});
-  const [error, setError] = useState({});
-
+  /**
+   *  Validates name and value of the input field
+   */
   const validate = (name, value) => {
     if (!value) {
       setIsValid(Object.assign(isValid, { [name]: false }));
@@ -44,6 +65,9 @@ const Login = () => {
     setIsValid(Object.assign(isValid, { [name]: true }));
   };
 
+  /**
+   * Handles login data and submitting the form
+   */
   const handleLogin = (e) => {
     e.preventDefault();
 
@@ -61,14 +85,23 @@ const Login = () => {
     }
   };
 
+  /**
+   *  Navigate to the steps page if the user already logged in
+   */
   if (isLoggedIn) {
     return <Navigate to="/steps" />;
   }
 
+  /**
+   *  Navigate to the registration page
+   */
   const onClickRegister = () => {
     navigate("/register/");
   };
 
+  /**
+   * Gets the corresponding error message
+   */
   const getFormErrorMessage = (name) => {
     return <div className="invalid-feedback">{error[name]}</div>;
   };

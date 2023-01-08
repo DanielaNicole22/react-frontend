@@ -13,11 +13,20 @@ import {
   Form,
 } from "react-bootstrap";
 
+/**
+ * Register Component
+ */
 const Register = () => {
   import("../styles/Register.css");
   const form = useRef();
   const checkBtn = useRef();
+  const dispatch = useDispatch();
 
+  /**
+   * --------------------
+   * * Component state
+   *  -------------------
+   */
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -32,69 +41,101 @@ const Register = () => {
   const [counter, setCounter] = useState(0);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
+  const [isValid, setIsValid] = useState({});
+  const [error, setError] = useState({});
 
+  /**
+   * -------------------
+   * * Redux store state
+   * -------------------
+   */
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { message } = useSelector((state) => state.message);
 
-  const dispatch = useDispatch();
-
+  /**
+   * Gets value of the email address input field
+   */
   const onChangeEmail = (e) => {
     const email = e.target.value;
     setEmail(email);
     validate("email", email);
   };
 
+  /**
+   * Gets value of the username input field
+   */
   const onChangeUsername = (e) => {
     const username = e.target.value;
     setUsername(username);
     validate("username", username);
   };
 
+  /**
+   * Gets value of the password input field
+   */
   const onChangePassword = (e) => {
     const password = e.target.value;
     setPassword(password);
     validate("password", password);
   };
 
+  /**
+   * Gets value of the confirm password input field
+   */
   const onChangeConfirmPassword = (e) => {
     const confirmPassword = e.target.value;
     setConfirmPassword(confirmPassword);
     validate("confirmPassword", confirmPassword);
   };
 
+  /**
+   * Gets value of the first name input field
+   */
   const onChangeFirstName = (e) => {
     const firstname = e.target.value;
     setFirstName(firstname);
     validate("firstname", firstname);
   };
 
+  /**
+   * Gets value of the middle name input field
+   */
   const onChangeMiddleName = (e) => {
     const middlename = e.target.value;
     setMiddleName(middlename);
     validate("middlename", middlename);
   };
 
+  /**
+   * Gets value of the last name input field
+   */
   const onChangeLastName = (e) => {
     const lastname = e.target.value;
     setLastName(lastname);
     validate("lastname", lastname);
   };
 
+  /**
+   * Gets value of the address input field
+   */
   const onChangeAddress = (e) => {
     const address = e.target.value;
     setAddress(address);
     validate("address", address);
   };
 
+  /**
+   * Gets value of the birthday input field
+   */
   const onChangeBirthday = (e) => {
     const birthday = e.target.value;
     setBirthday(birthday);
     validate("birthday", birthday);
   };
 
-  const [isValid, setIsValid] = useState({});
-  const [error, setError] = useState({});
-
+  /**
+   *  Validates name and value of the input field
+   */
   const validate = (name, value) => {
     if (!value && name !== "middlename") {
       setIsValid(Object.assign(isValid, { [name]: false }));
@@ -196,6 +237,9 @@ const Register = () => {
     setIsValid(Object.assign(isValid, { [name]: true }));
   };
 
+  /**
+   * Handles register data and submitting the form
+   */
   const handleRegister = (e) => {
     e.preventDefault();
 
@@ -241,10 +285,16 @@ const Register = () => {
     }
   };
 
+  /**
+   * Gets the corresponding error message
+   */
   const getFormErrorMessage = (name) => {
     return <div className="invalid-feedback">{error[name]}</div>;
   };
 
+  /**
+   *  Navigate to the steps page if the user already logged in
+   */
   if (isLoggedIn) {
     return <Navigate to="/steps" />;
   }
@@ -255,8 +305,8 @@ const Register = () => {
         <section className="register-section">
           <div className="h-100">
             <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col-lg-6 col-xl-6">
-            <img
+              <div className="col-lg-6 col-xl-6">
+                <img
                   src="/images/register.jpg"
                   className="img-fluid"
                   alt="Laptop"
@@ -345,10 +395,7 @@ const Register = () => {
                             </Row>
                             <Row>
                               <Col>
-                                <FloatingLabel
-                                  label="Address"
-                                  className="mb-3"
-                                >
+                                <FloatingLabel label="Address" className="mb-3">
                                   <Form.Control
                                     name="address"
                                     value={address}

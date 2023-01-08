@@ -7,12 +7,19 @@ import {
   UPDATE_USER_SUCCESS,
 } from "../actions/types";
 
+/**
+ * A module that manages auth-related state
+ */
+
 const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = user
   ? { isLoggedIn: true, user }
   : { isLoggedIn: false, user: null };
 
+/**
+ * Method that take the current state and an action as arguments, and return a new state result
+ */
 export default function authReducer(state = initialState, action) {
   const { type, payload } = action;
 

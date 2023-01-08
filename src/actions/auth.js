@@ -10,6 +10,15 @@ import {
 
 import AuthService from "../services/auth.service";
 
+/**
+ * A module that sends success and error response action for auth-related methods
+ * @module actions/auth
+ */
+
+/**
+ * User registration
+ * success and error response action
+ */
 export const register =
   (
     email,
@@ -68,6 +77,10 @@ export const register =
     );
   };
 
+/**
+ * User login
+ * success and error response action
+ */
 export const login = (username, password) => (dispatch) => {
   return AuthService.login(username, password).then(
     (data) => {
@@ -120,6 +133,10 @@ export const login = (username, password) => (dispatch) => {
   );
 };
 
+/**
+ * User update data
+ * success and error response action
+ */
 export const updateUser =
   (
     user_id,
@@ -188,6 +205,9 @@ export const updateUser =
     );
   };
 
+/**
+ * User logout action
+ */
 export const logout = () => (dispatch) => {
   AuthService.logout();
 

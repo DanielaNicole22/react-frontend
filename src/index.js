@@ -7,6 +7,14 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 
+
+/**
+ * A module for the main index of the app that renders the router, provider, and main component
+ */
+
+/**
+ * ReactDOM.render() that controls the contents of the container node passed in
+ */
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>

@@ -1,10 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import Layout from "./layout/Layout";
 
+/**
+ * 404 Page Not Found component
+ */
 const PageNotFound = () => {
   import("../styles/PageNotFound.css");
   const navigate = useNavigate();
 
+  /**
+   * Navigates to home page
+   */
   const onClickHome = () => {
     navigate("/");
   };

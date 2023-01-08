@@ -2,6 +2,9 @@ import Header from "components/layout/Header";
 import { Container, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
+/**
+ * Managing the display of the layout of the components
+ */
 const Layout = (props) => {
   const { isLoggedIn } = useSelector((state) => state.auth);
 

@@ -2,7 +2,16 @@ import { useSelector } from "react-redux";
 import { Row, Col, Table } from "react-bootstrap";
 import Layout from "components/layout/Layout";
 
+/**
+ * View Profile component
+ */
 const ViewProfile = () => {
+
+  /**
+   * -------------------
+   * * Redux store state
+   * -------------------
+   */
   const { user } = useSelector((state) => state.auth);
 
   return (

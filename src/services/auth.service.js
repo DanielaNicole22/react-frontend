@@ -3,6 +3,9 @@ import axios from "axios";
 /**Development server config */
 const API_URL = "http://127.0.0.1:5000/api/users/";
 
+/**
+ * User registration service that sends request and receives response data using axios
+ */
 const register = (
   email,
   username,
@@ -42,6 +45,9 @@ const register = (
     });
 };
 
+/**
+ * User login service that sends request and receives response data using axios
+ */
 const login = (username, password) => {
   return axios
     .post(
@@ -59,6 +65,9 @@ const login = (username, password) => {
     });
 };
 
+/**
+ * User logout service that removes user items in the localStorage, sends request and receives response data using axios
+ */
 const logout = () => {
   localStorage.removeItem("user");
   return axios
@@ -70,6 +79,9 @@ const logout = () => {
     });
 };
 
+/**
+ * Update user data service that sends request and receives response data using axios
+ */
 const updateUser = (
   user_id,
   nickname,

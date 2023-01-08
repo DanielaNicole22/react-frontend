@@ -11,6 +11,9 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 
+/**
+ * App main component that list all routes to redirect to their corresponding components
+ */
 const App = () => {
   return (
     <>

@@ -3,36 +3,42 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../actions/auth";
 import { useNavigate } from "react-router-dom";
 import Layout from "./layout/Layout";
-import {
-  Row,
-  Col,
-  FloatingLabel,
-  Form,
-  Button
-} from "react-bootstrap";
+import { Row, Col, FloatingLabel, Form, Button } from "react-bootstrap";
 
+/**
+ * Steps component
+ */
 const Steps = () => {
   import("../styles/Steps.css");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  /**
+   * -------------------
+   * * Redux store state
+   * -------------------
+   */
   const { user } = useSelector((state) => state.auth);
 
+  /**
+   * --------------------
+   * * Component state
+   *  -------------------
+   */
   const [nickname, setNickname] = useState(user?.nickname || "");
   const [civilStatus, setCivilStatus] = useState(user?.civilStatus || "single");
-
   const [birthPlace, setBirthPlace] = useState(user?.birthPlace || "");
   const [height, setHeight] = useState(user?.height || "");
   const [weight, setWeight] = useState(user?.weight || "");
-
   const [fatherName, setFatherName] = useState(user?.fatherName || "");
   const [motherName, setMotherName] = useState(user?.motherName || "");
-
   const [isValid, setIsValid] = useState({});
   const [error, setError] = useState({});
-
   const [counter, setCounter] = useState(0);
 
+  /**
+   *  Handles event after clicking the next button
+   */
   const onClickNextBtn1 = (e) => {
     validateCategory1(e);
   };
@@ -43,6 +49,9 @@ const Steps = () => {
     validateCategory3(e);
   };
 
+  /**
+   *  Move to the next element
+   */
   const moveNext = (e) => {
     const current_fs = e.target.parentElement;
     const next_fs = e.target.parentElement.nextElementSibling;
@@ -74,48 +83,72 @@ const Steps = () => {
     current_fs.style.display = "none";
   };
 
+  /**
+   * Gets value of the nickname input field
+   */
   const onChangeNickname = (e) => {
     const nickname = e.target.value;
     setNickname(nickname);
     validate("nickname", nickname);
   };
 
+  /**
+   * Gets value of the civil status input field
+   */
   const onChangeCivilStatus = (e) => {
     const civilStatus = e.target.value;
     setCivilStatus(civilStatus);
     validate("civilStatus", civilStatus);
   };
 
+  /**
+   * Gets value of the birth place input field
+   */
   const onChangeBirthPlace = (e) => {
     const birthPlace = e.target.value;
     setBirthPlace(birthPlace);
     validate("birthPlace", birthPlace);
   };
 
+  /**
+   * Gets value of the height input field
+   */
   const onChangeHeight = (e) => {
     const height = e.target.value;
     setHeight(height);
     validate("height", height);
   };
 
+  /**
+   * Gets value of the weight input field
+   */
   const onChangeWeight = (e) => {
     const weight = e.target.value;
     setWeight(weight);
     validate("weight", weight);
   };
 
+  /**
+   * Gets value of the father name input field
+   */
   const onChangeFatherName = (e) => {
     const fatherName = e.target.value;
     setFatherName(fatherName);
     validate("fatherName", fatherName);
   };
 
+  /**
+   * Gets value of the mother name input field
+   */
   const onChangeMotherName = (e) => {
     const motherName = e.target.value;
     setMotherName(motherName);
     validate("motherName", motherName);
   };
 
+  /**
+   *  Validates name and value of the input field
+   */
   const validate = (name, value) => {
     if (!value) {
       setIsValid(Object.assign(isValid, { [name]: false }));
@@ -162,12 +195,18 @@ const Steps = () => {
     setIsValid(Object.assign(isValid, { [name]: true }));
   };
 
+  /**
+   *  Validates category in Step 1 before submit to save changes
+   */
   const validateCategory1 = (e) => {
     validate("nickname", nickname);
     validate("civilStatus", civilStatus);
     handleSubmit(e);
   };
 
+  /**
+   *  Validates category in Step 2 before submit to save changes
+   */
   const validateCategory2 = (e) => {
     validate("birthPlace", birthPlace);
     validate("height", height);
@@ -175,12 +214,18 @@ const Steps = () => {
     handleSubmit(e);
   };
 
+  /**
+   *  Validates category in Step 3 before submit to save changes
+   */
   const validateCategory3 = (e) => {
     validate("fatherName", fatherName);
     validate("motherName", motherName);
     handleSubmit(e);
   };
 
+  /**
+   * Handles form data and submitting the form to update user data
+   */
   const handleSubmit = (e) => {
     setCounter(counter + 1);
 
@@ -196,17 +241,22 @@ const Steps = () => {
           fatherName,
           motherName
         )
-      )
-        .then(() => {
-          moveNext(e);
-        })
+      ).then(() => {
+        moveNext(e);
+      });
     }
   };
 
+  /**
+   * Gets the corresponding error message
+   */
   const getFormErrorMessage = (name) => {
     return <div className="invalid-feedback">{error[name]}</div>;
   };
 
+  /**
+   * Check onload state of the data then proceed to the respective step number or page
+   */
   useEffect(() => {
     const nodes = Array.prototype.slice.call(
       document.getElementsByTagName("fieldset")
